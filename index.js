@@ -4,15 +4,9 @@ const path = require("path");
 
 // Function to get the git diff
 async function getGitDiff(repoPath) {
-    const git = simpleGit(repoPath);
-    try {
-        return await git.diff();
-    } catch (error) {
-        console.error("Error getting git diff:", error);
-        return null;
-    }
   const git = simpleGit(repoPath);
   try {
+    return await git.diff(["--staged"]);
   } catch (error) {
     console.error("Error getting git diff:", error);
     return null;
