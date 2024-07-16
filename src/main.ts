@@ -19,7 +19,13 @@ async function getGitDiff(repoPath: string): Promise<string | null> {
         );
         const s = Date.now();
         const diff = await git.diff(gitDiffOptions);
-        console.log('🖹', chalk.white('Successfully fetched git diff in'), chalk.whiteBright(`${Date.now() - s}ms.`));
+        console.log(
+            '🖹',
+            chalk.white('Successfully fetched git diff in'),
+            chalk.whiteBright(`${Date.now() - s}ms`),
+            chalk.white('with a length of'),
+            chalk.whiteBright(`${diff.length} characters.`),
+        );
         return diff;
     } catch (error) {
         console.log('❌ ', chalk.redBright('Error getting git diff'), chalk.whiteBright(error));
