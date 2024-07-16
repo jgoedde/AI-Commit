@@ -11,7 +11,9 @@ async function getGitDiff(repoPath: string): Promise<string | null> {
     try {
         console.log(
             '🖹',
-            chalk.white(`Fetching git diff with options`),
+            chalk.white('Fetching'),
+            chalk.whiteBright('git diff'),
+            chalk.white('with options'),
             chalk.whiteBright(JSON.stringify(gitDiffOptions)),
             chalk.white('...'),
         );
