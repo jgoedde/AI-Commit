@@ -1,8 +1,8 @@
-import { CleanOptions, SimpleGit, simpleGit } from 'simple-git';
 import axios from 'axios';
-import * as child_process from 'node:child_process';
-import path from 'node:path';
 import chalk from 'chalk';
+import clipboard from 'clipboardy';
+import path from 'node:path';
+import { CleanOptions, SimpleGit, simpleGit } from 'simple-git';
 
 const gitDiffOptions = ['--staged'];
 
@@ -104,7 +104,7 @@ async function generateCommitMessage(repoPath: string): Promise<void> {
     if (commitMessage) {
         const cleanedCommitMessage = commitMessage.replace(/'/g, '').replace(/\n/g, '\n');
 
-        child_process.spawn('clip').stdin.end(cleanedCommitMessage);
+        clipboard.writeSync(cleanedCommitMessage);
 
         console.log('✅ ', chalk.greenBright('Successfully generated commit message and copied to clipboard'));
     } else {
