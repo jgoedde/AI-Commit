@@ -130,7 +130,7 @@ async function generateCommitMessage(repoPath: string): Promise<void> {
                 chalk.whiteBright('this message? (Y/n):'),
         );
         if ((typeof answer === 'string' && answer.toLowerCase() === 'y') || answer === '') {
-            simpleGit(repoPath).commit(cleanedCommitMessage);
+            await simpleGit(repoPath).commit(cleanedCommitMessage);
             console.log('✅ ', chalk.greenBright('Committed.'));
         }
         if (typeof answer === 'string' && answer.toLowerCase() === 'n') {
