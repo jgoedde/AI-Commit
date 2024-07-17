@@ -142,7 +142,7 @@ async function generateCommitMessage(repoPath: string): Promise<void> {
     }
 }
 
-const repoPath = process.argv[2];
+const repoPath = process.argv[2] ?? '.';
 
 if (!repoPath) {
     console.log('❌ ', chalk.redBright('Please provide the path to the Git repository as an argument.'));
