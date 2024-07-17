@@ -131,11 +131,11 @@ async function generateCommitMessage(repoPath: string): Promise<void> {
         );
         if ((typeof answer === 'string' && answer.toLowerCase() === 'y') || answer === '') {
             simpleGit(repoPath).commit(cleanedCommitMessage);
+            console.log('✅ ', chalk.greenBright('Committed.'));
         }
         if (typeof answer === 'string' && answer.toLowerCase() === 'n') {
-            console.log('🚫', chalk.whiteBright('Committing skipped, but copied to clipboard.'));
-
             clipboard.writeSync(cleanedCommitMessage);
+            console.log('🚫', chalk.whiteBright('Committing skipped, but copied to clipboard.'));
         }
     } else {
         console.log('❌ ', chalk.redBright('Failed to generate commit message.'));
