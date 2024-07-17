@@ -2,6 +2,7 @@ import axios from 'axios';
 import chalk from 'chalk';
 import clipboard from 'clipboardy';
 import path from 'node:path';
+import * as readline from 'node:readline';
 import { CleanOptions, SimpleGit, simpleGit } from 'simple-git';
 
 const gitDiffOptions = ['--staged'];
@@ -91,6 +92,20 @@ async function getCommitMessageFromOpenAI(prompt: string): Promise<string> {
     }
 }
 
+async function askQuestion(q: string): Promise<unknown> {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+
+    return new Promise((resolve) =>
+        rl.question(q, (ans) => {
+            rl.close();
+            resolve(ans);
+        }),
+    );
+}
+
 async function generateCommitMessage(repoPath: string): Promise<void> {
     const diff = await getGitDiff(repoPath);
     if (!diff) {
@@ -104,9 +119,24 @@ async function generateCommitMessage(repoPath: string): Promise<void> {
     if (commitMessage) {
         const cleanedCommitMessage = commitMessage.replace(/'/g, '').replace(/\n/g, '\n');
 
-        clipboard.writeSync(cleanedCommitMessage);
+        console.log('✅ ', chalk.greenBright('Successfully generated commit message.\n'));
+        console.log(chalk.white(cleanedCommitMessage), '\n');
 
-        console.log('✅ ', chalk.greenBright('Successfully generated commit message and copied to clipboard'));
+        const answer = await askQuestion(
+            chalk.whiteBright('Do you want to') +
+                ' ' +
+                chalk.greenBright('automatically commit') +
+                ' ' +
+                chalk.whiteBright('this message? (Y/n):'),
+        );
+        if ((typeof answer === 'string' && answer.toLowerCase() === 'y') || answer === '') {
+            simpleGit(repoPath).commit(cleanedCommitMessage);
+        }
+        if (typeof answer === 'string' && answer.toLowerCase() === 'n') {
+            console.log('🚫', chalk.whiteBright('Committing skipped, but copied to clipboard.'));
+
+            clipboard.writeSync(cleanedCommitMessage);
+        }
     } else {
         console.log('❌ ', chalk.redBright('Failed to generate commit message.'));
     }
