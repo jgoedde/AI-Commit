@@ -34,16 +34,6 @@ async function getGitDiff(repoPath: string): Promise<string | null> {
     }
 }
 
-function generateChatGPTPrompt(diff: string): string {
-    return (
-        'I want you to act as the author of a commit message in git.' +
-        `I'll enter a git diff, and your job is to convert it into a useful commit message in english language` +
-        'Do not preface the commit with anything, use the present tense, return the full sentence, and use the conventional commits specification (<type in lowercase>: <subject>): ' +
-        'Then leave an empty line and continue with a more detailed explanation. Write only one sentence for the first part, and two or thee sentences at most for the detailed explanation.' +
-        diff
-    );
-}
-
 async function getCommitMessageFromOpenAI(prompt: string): Promise<string> {
     try {
         console.log('⌛ ', chalk.white('Generating commit message using chayns.codes...'));
@@ -113,7 +103,13 @@ async function generateCommitMessage(repoPath: string): Promise<void> {
         return;
     }
 
-    const prompt = generateChatGPTPrompt(diff);
+    const prompt =
+        'I want you to act as the author of a commit message in git.' +
+        `I'll enter a git diff, and your job is to convert it into a useful commit message in english language` +
+        'Do not preface the commit with anything, use the present tense, return the full sentence, and use the conventional commits specification (<type in lowercase>: <subject>): ' +
+        'Then leave an empty line and continue with a more detailed explanation. Write only one sentence for the first part, and two or thee sentences at most for the detailed explanation.' +
+        diff;
+
     const commitMessage = await getCommitMessageFromOpenAI(prompt);
 
     if (commitMessage) {
