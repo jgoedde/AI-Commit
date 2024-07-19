@@ -18,7 +18,8 @@ const cliArgsParseResult = cliArgsSchema.safeParse(minimistResult);
 
 if (
     !cliArgsParseResult.success ||
-    [...Object.keys(minimistResult), ...Object.values(minimistResult)].includes('help')
+    JSON.stringify(minimistResult).includes('help') ||
+    (process.argv[2] ?? '').toLowerCase() === 'help'
 ) {
     showHelp();
 
