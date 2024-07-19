@@ -2,8 +2,8 @@ import chalk from 'chalk';
 import clipboard from 'clipboardy';
 import { simpleGit } from 'simple-git';
 import { Ok, Result } from 'ts-results-es';
+import { askQuestion } from '../../cliUtils/cliUtils.js';
 import { Command } from '../../types/Command.js';
-import { askQuestion } from '../../utils/cliUtils.js';
 import { eventBroker } from '../../utils/eventBroker.js';
 
 export class CommitCommand implements Command<void> {
