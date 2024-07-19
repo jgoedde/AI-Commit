@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import readline from 'node:readline';
 import { z } from 'zod';
 
@@ -24,3 +25,27 @@ export const cliArgsSchema = z.object({
         .or(z.literal('cc'))
         .default('gitmoji'),
 });
+
+export function showHelp(): void {
+    console.log('Usage:', 'node main.js <repositoryPath> [options]');
+    console.log('');
+    console.log('Options:');
+    console.log(
+        '  ',
+        chalk.whiteBright('-t <type>'),
+        '  Type of commit message to generate (gitmoji, gm, conventional, conv, cc). Defaults to',
+        chalk.yellowBright('gitmoji'),
+    );
+    console.log('');
+    console.log('Examples:');
+    console.log(
+        '  node main.js . -t gitmoji',
+        chalk.gray('- Runs the tool in the current directory using gitmoji strategy.'),
+    );
+    console.log(
+        '  node main.js . -t cc',
+        chalk.gray('- Runs the tool in the current directory using conventional commits strategy.'),
+    );
+    console.log('  node main.js', chalk.gray('- Runs the tool in the current directory using gitmoji strategy.'));
+    console.log('');
+}

@@ -9,34 +9,18 @@ import { GetGitDiffCommand } from './commands/get-git-diff/GetGitDiffCommand.js'
 import './commands/get-git-diff/GetGitDiffCommandListener.js';
 import { CommitMessageStrategyFactory } from './factories/commitMessageStrategyFactory.js';
 
-import { cliArgsSchema } from './cliUtils/cliUtils.js';
+import { cliArgsSchema, showHelp } from './cliUtils/cliUtils.js';
 
 const repositoryPath = path.resolve(process.argv[2] ?? '.');
 
-const cliArgsParseResult = cliArgsSchema.safeParse(minimist(process.argv.slice(3)));
+const minimistResult = minimist(process.argv.slice(3));
+const cliArgsParseResult = cliArgsSchema.safeParse(minimistResult);
 
-if (!cliArgsParseResult.success) {
-    console.log('Usage:', 'node main.js <repositoryPath> [options]');
-    console.log('');
-    console.log('Options:');
-    console.log(
-        '  ',
-        chalk.whiteBright('-t <type>'),
-        '  Type of commit message to generate (gitmoji, gm, conventional, conv, cc). Defaults to',
-        chalk.yellowBright('gitmoji'),
-    );
-    console.log('');
-    console.log('Examples:');
-    console.log(
-        '  node main.js . -t gitmoji',
-        chalk.gray('- Runs the tool in the current directory using gitmoji strategy.'),
-    );
-    console.log(
-        '  node main.js . -t cc',
-        chalk.gray('- Runs the tool in the current directory using conventional commits strategy.'),
-    );
-    console.log('  node main.js', chalk.gray('- Runs the tool in the current directory using gitmoji strategy.'));
-    console.log('');
+if (
+    !cliArgsParseResult.success ||
+    [...Object.keys(minimistResult), ...Object.values(minimistResult)].includes('help')
+) {
+    showHelp();
 
     process.exit(1);
 }
