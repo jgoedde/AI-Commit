@@ -36,7 +36,9 @@
         "clipboardy": "^4.0.0",
         "prettier": "^3.3.3",
         "simple-git": "^3.25.0",
-        "tslib": "^2.6"
+        "ts-results-es": "^4.2.0",
+        "tslib": "^2.6",
+        "zod": "^3.23.8"
     },
     "devDependencies": {
         "@types/jest": "^29.5",
