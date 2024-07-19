@@ -27,8 +27,15 @@ if (!cliArgsParseResult.success) {
     );
     console.log('');
     console.log('Examples:');
-    console.log('  node main.js . -t gitmoji');
-    console.log('  node main.js . -t cc');
+    console.log(
+        '  node main.js . -t gitmoji',
+        chalk.gray('- Runs the tool in the current directory using gitmoji strategy.'),
+    );
+    console.log(
+        '  node main.js . -t cc',
+        chalk.gray('- Runs the tool in the current directory using conventional commits strategy.'),
+    );
+    console.log('  node main.js', chalk.gray('- Runs the tool in the current directory using gitmoji strategy.'));
     console.log('');
 
     process.exit(1);
