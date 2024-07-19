@@ -24,9 +24,7 @@ if (!repoPath) {
     const getGitDiffCommand = new GetGitDiffCommand(absolutePath);
     const diff = await getGitDiffCommand.execute();
 
-    if (!diff) {
-        console.log('🤷', chalk.redBright('git diff returned no results. Did you forget to stage your changes?'));
-    } else {
+    if (diff.isOk()) {
         const prompt =
             'I want you to act as the author of a commit message in git.' +
             `I'll enter a git diff, and your job is to convert it into a useful commit message in english language` +

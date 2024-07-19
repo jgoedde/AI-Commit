@@ -15,6 +15,7 @@ type LocalEventTypes = {
     'committed-event': [];
     'commit-message-copied-to-clipboard-event': [];
     'git-diff-started-event': [diffOptions: string[]];
+    'git-diff-empty-event': [];
 };
 
 export const eventBroker = new TypedEventEmitter<LocalEventTypes>();

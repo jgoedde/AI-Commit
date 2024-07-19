@@ -15,6 +15,10 @@ eventBroker.on('git-diff-unavailable-event', (result) => {
     console.log('❌ ', chalk.redBright('Error getting git diff'), chalk.whiteBright(result));
 });
 
+eventBroker.on('git-diff-empty-event', () => {
+    console.log('🤷', chalk.redBright('git diff returned no results. Did you forget to stage your changes?'));
+});
+
 eventBroker.on('git-diff-started-event', (options) => {
     console.log(
         '🖹',

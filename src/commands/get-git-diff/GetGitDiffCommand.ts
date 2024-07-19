@@ -1,5 +1,6 @@
 import { CleanOptions, SimpleGit, simpleGit } from 'simple-git';
-import { Ok, Result } from 'ts-results-es';
+import { Err, Ok, Result } from 'ts-results-es';
+import { z } from 'zod';
 import { Command } from '../../types/Command.js';
 import { eventBroker } from '../../utils/eventBroker.js';
 
@@ -20,11 +21,17 @@ export class GetGitDiffCommand implements Command<GitDiffResult> {
             const diff = await git.diff(this.gitDiffOptions);
             const duration = Date.now() - now;
 
-            const res = { diff, duration };
+            if (!z.string().min(1).safeParse(diff).success) {
+                eventBroker.emit('git-diff-empty-event');
 
-            eventBroker.emit('git-diff-received-event', res);
+                return Err(new Error('The git diff is empty.'));
+            } else {
+                const res = { diff, duration };
 
-            return Ok(res);
+                eventBroker.emit('git-diff-received-event', res);
+
+                return Ok(res);
+            }
         } catch (error) {
             eventBroker.emit('git-diff-unavailable-event', error);
 
