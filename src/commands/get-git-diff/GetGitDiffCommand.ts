@@ -9,19 +9,21 @@ export type GitDiffError = Error;
 
 export class GetGitDiffCommand implements Command<GitDiffResult> {
     private readonly gitDiffOptions = ['--staged'];
+    private readonly git: SimpleGit;
 
-    public constructor(private readonly repositoryPath: string) {}
+    public constructor(private readonly repositoryPath: string) {
+        this.git = simpleGit(this.repositoryPath).clean(CleanOptions.FORCE);
+    }
 
     public async execute(): Promise<Result<GitDiffResult, GitDiffError>> {
         eventBroker.emit('git-diff-started-event', this.gitDiffOptions);
 
-        const git: SimpleGit = simpleGit(this.repositoryPath).clean(CleanOptions.FORCE);
         try {
             const now = Date.now();
-            const diff = await git.diff(this.gitDiffOptions);
+            const diff = await this.git.diff(this.gitDiffOptions);
             const duration = Date.now() - now;
 
-            if (!z.string().min(1).safeParse(diff).success) {
+            if (this.isBlank(diff)) {
                 eventBroker.emit('git-diff-empty-event');
 
                 return Err(new Error('The git diff is empty.'));
@@ -37,5 +39,9 @@ export class GetGitDiffCommand implements Command<GitDiffResult> {
 
             return error;
         }
+    }
+
+    private isBlank(str: string): boolean {
+        return !z.string().min(1).safeParse(str).success;
     }
 }
