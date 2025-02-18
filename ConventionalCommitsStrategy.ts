@@ -5,24 +5,29 @@ import { CommitMessageStrategy } from "./CommitMessageStrategy.ts";
  * following the conventional commits specification based on a provided git diff.
  */
 export class ConventionalCommitsStrategy implements CommitMessageStrategy {
-    /**
-     * Generates a commit message prompt using the conventional commits' specification.
-     * The prompt instructs to act as the author of a commit message, converting a git diff
-     * into a meaningful commit message in English. It emphasizes using the present tense,
-     * adhering to the conventional commits format (`<type>: <subject>`), and providing
-     * a detailed explanation in a specified format.
-     *
-     * @param diff - The git diff string used as the basis for generating the commit message prompt.
-     * @returns A string representing the detailed instructions for creating a commit message
-     *          based on the conventional commits specification, including the provided git diff.
-     */
-    public getPrompt(diff: string): string {
-        return (
-            "I want you to act as the author of a commit message in git." +
-            `I'll enter a git diff, and your job is to convert it into a useful commit message in english language` +
-            "Do not preface the commit with anything, use the present tense, return the full sentence, and use the conventional commits specification (<type in lowercase>: <subject>): " +
-            "Then leave an empty line and continue with a more detailed explanation. Write only one sentence for the first part, and two or three sentences at most for the detailed explanation." +
-            diff
-        );
+    public getPrompt(diff: string, context?: string): string {
+        const commitConvention = "Conventional Commit Convention";
+        const missionStatement =
+            `Your mission is to create clean and comprehensive commit messages as per the ${commitConvention} and explain WHAT were the changes and mainly WHY the changes were done.`;
+        const diffInstruction =
+            "I'll send you an output of 'git diff --staged' command, and you are to convert it into a commit message.";
+        const conventionGuidelines =
+            "Do not preface the commit with anything, except for the conventional commit keywords: fix, feat, build, chore, ci, docs, style, refactor, perf, test.";
+        const descriptionGuideline =
+            "Don't add any descriptions to the commit, only commit message.";
+        const oneLineCommitGuideline =
+            "Craft a concise commit message that encapsulates all changes made, with an emphasis on the primary updates. If the modifications share a common theme or scope, mention it succinctly; otherwise, leave the scope out to maintain focus. The goal is to provide a clear and unified overview of the changes in a one single message, without diverging into a list of commit per file change.";
+        const generalGuidelines =
+            `Use the present tense. Lines must not be longer than 74 characters. Use english language for the commit message.`;
+        const userInputContext = this.userInputCodeContext(context ?? "");
+
+        return `${missionStatement}\n${diffInstruction}\n${conventionGuidelines}\n${descriptionGuideline}\n${oneLineCommitGuideline}\n${generalGuidelines}\n${userInputContext}\n${diff}`;
+    }
+
+    private userInputCodeContext(context: string) {
+        if (context !== "" && context !== " ") {
+            return `Additional context provided by the user: <context>${context}</context>\nConsider this context when generating the commit message, incorporating relevant information when appropriate.`;
+        }
+        return "";
     }
 }

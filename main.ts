@@ -3,7 +3,8 @@ import { getGitDiff } from "./GitClient.ts";
 import { colors } from "@cliffy/ansi/colors";
 import { CommitMessageStrategyFactory } from "./CommitMessageStrategyFactory.ts";
 import { getCommitMessage } from "./HttpClient.ts";
-import clipboard from 'clipboardy';
+import { Logger } from "./Logger.ts";
+import { writeText } from "https://deno.land/x/copy_paste/mod.ts";
 
 export enum CommitMessageStrategyArgs {
     CONVENTIONAL_COMMITS = "conventional-commits",
@@ -32,26 +33,38 @@ await new Command()
     )
     .arguments("<git-directory:file>")
     .action(async ({ strategy: strategyArg, extraPrompt }, directory) => {
+        Logger.info(
+            "Querying git diff for directory",
+            colors.italic(directory),
+            `using ${strategyArg} strategy...`,
+        );
+
         const { diff, operationTimeMs } = await getGitDiff(directory);
 
         if (diff.trim().length === 0) {
-            console.error(
-                colors.red(
-                    "No staged changes were found. Did you forget to stage your changes before running aicommit?",
-                ),
+            Logger.error(
+                "No staged changes were found. Did you forget to stage your changes before running aicommit?",
             );
+
             return Deno.exit();
         }
 
-        console.info(colors.green(`Received diff in ${operationTimeMs}ms`));
+        Logger.info(
+            `Successfully received git diff in ${operationTimeMs}ms. Fetching AI response...`,
+        );
 
         const strategy = CommitMessageStrategyFactory.getStrategy(strategyArg);
         const prompt = strategy.getPrompt(diff);
-        console.info(colors.green("Reaching out to AI..."));
-        let { commitMessage, durationMs } = await getCommitMessage(prompt);
-        console.info(
-            colors.green(`Received AI commit message in ${durationMs}ms. Copying to clipboard...`),
+
+        const { commitMessage, durationMs } = await getCommitMessage(prompt);
+
+        Logger.info(
+            `Received AI commit message in ${durationMs}ms.`,
         );
-        clipboard.writeSync(commitMessage)
+        console.log(commitMessage);
+
+        await writeText(commitMessage);
+
+        Logger.info("Copied commit message to clipboard");
     })
     .parse(Deno.args);

@@ -7,7 +7,12 @@ export async function getGitDiff(
 
     const start = Date.now();
 
-    const diff = await git.diff(["--staged"]);
+    const diff = await git.diff([
+        "--staged",
+        "--",
+        ":!*.lock", // Exclude files ending in .lock
+        ":!package-lock.json", // Explicitly exclude package-lock.json
+    ]);
 
     const operationTimeMs = Date.now() - start;
 

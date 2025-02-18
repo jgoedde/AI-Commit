@@ -10,5 +10,5 @@ export interface CommitMessageStrategy {
      * @param diff - The git diff string used to generate the commit message prompt.
      * @returns A string representing the commit message prompt.
      */
-    getPrompt(diff: string): string;
+    getPrompt(diff: string, context?: string): string;
 }

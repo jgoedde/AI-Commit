@@ -7,7 +7,6 @@
         "@cliffy/command": "jsr:@cliffy/command@^1.0.0-rc.7",
         "@cliffy/prompt": "jsr:@cliffy/prompt@^1.0.0-rc.7",
         "@std/assert": "jsr:@std/assert@1",
-        "clipboardy": "npm:clipboardy@^4.0.0",
         "promptly": "npm:promptly@^3.2.0",
         "simple-git": "npm:simple-git@^3.27.0",
         "zod": "npm:zod@^3.23.8"
