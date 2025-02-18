@@ -8,7 +8,7 @@ export async function getCommitMessage(
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt: prompt.slice(0, 15000) }),
     });
 
     const commitMessage = ((await response.json()) as { aiRes: string }).aiRes;
