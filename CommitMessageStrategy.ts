@@ -8,6 +8,7 @@ export interface CommitMessageStrategy {
      * Generates a commit message prompt based on the provided git diff.
      *
      * @param diff - The git diff string used to generate the commit message prompt.
+     * @param context - Additional user-provided context for the AI.
      * @returns A string representing the commit message prompt.
      */
     getPrompt(diff: string, context?: string): string;
