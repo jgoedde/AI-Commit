@@ -54,7 +54,7 @@ await new Command()
         );
 
         const strategy = CommitMessageStrategyFactory.getStrategy(strategyArg);
-        const prompt = strategy.getPrompt(diff);
+        const prompt = strategy.getPrompt(diff, extraPrompt);
 
         const { commitMessage, durationMs } = await getCommitMessage(prompt);
 
