@@ -15,7 +15,7 @@ const commitMessageStrategy = new EnumType(CommitMessageStrategyArgs);
 
 await new Command()
     .name("aicommit")
-    .version("1.0.0")
+    .version("1.0.0-beta")
     .description("Generate your commit messages with AI")
     .type("message-strategy", commitMessageStrategy)
     .option(
