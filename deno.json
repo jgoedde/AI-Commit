@@ -8,8 +8,7 @@
         "@cliffy/prompt": "jsr:@cliffy/prompt@^1.0.0-rc.7",
         "@std/assert": "jsr:@std/assert@1",
         "promptly": "npm:promptly@^3.2.0",
-        "simple-git": "npm:simple-git@^3.27.0",
-        "zod": "npm:zod@^3.23.8"
+        "simple-git": "npm:simple-git@^3.27.0"
     },
     "fmt": {
         "lineWidth": 80,

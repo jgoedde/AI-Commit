@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { CommitMessageStrategyArgs } from "./main.ts";
 import { CommitMessageStrategy } from "./CommitMessageStrategy.ts";
 import { ConventionalCommitsStrategy } from "./ConventionalCommitsStrategy.ts";
