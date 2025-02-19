@@ -1,6 +1,7 @@
 # AI-Commit
 
-AI-Commit is a CLI application that allows you to ask ChatGPT in order to generate a commit message based on your current git changes.
+AI-Commit is a CLI application that allows you to ask ChatGPT in order to
+generate a commit message based on your current git changes.
 
 ## Installation
 
@@ -10,7 +11,8 @@ When running on linux:
 
 - `xsel`
 
-Download the appropriate binary file from the [GitHub releases](https://github.com/jgoedde/AI-Commit/releases).
+Download the appropriate binary file from the
+[GitHub releases](https://github.com/jgoedde/AI-Commit/releases).
 
 ## Usage
 
