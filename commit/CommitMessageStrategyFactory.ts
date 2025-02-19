@@ -1,4 +1,4 @@
-import { CommitMessageStrategyArgs } from "./main.ts";
+import { CommitMessageStrategyArgs } from "../main.ts";
 import { CommitMessageStrategy } from "./CommitMessageStrategy.ts";
 import { ConventionalCommitsStrategy } from "./ConventionalCommitsStrategy.ts";
 import { GitmojiCommitStrategy } from "./GitmojiCommitStrategy.ts";

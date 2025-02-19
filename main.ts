@@ -1,9 +1,9 @@
 import { Command, EnumType } from "@cliffy/command";
-import { getGitDiff } from "./GitClient.ts";
+import { getGitDiff } from "./git/GitClient.ts";
 import { colors } from "@cliffy/ansi/colors";
-import { CommitMessageStrategyFactory } from "./CommitMessageStrategyFactory.ts";
-import { getCommitMessage } from "./HttpClient.ts";
-import { Logger } from "./Logger.ts";
+import { CommitMessageStrategyFactory } from "./commit/CommitMessageStrategyFactory.ts";
+import { getCommitMessage } from "./infra/HttpClient.ts";
+import { Logger } from "./infra/Logger.ts";
 import { writeText } from "https://deno.land/x/copy_paste/mod.ts";
 
 export enum CommitMessageStrategyArgs {
